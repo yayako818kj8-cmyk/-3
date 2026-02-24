@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>横スクロールマンガ</title>
+<title>縦スクロールマンガ</title>
 
 <style>
   /* ===== 基本 ===== */
@@ -34,19 +34,19 @@
   /* ===== マンガコンテナ ===== */
   #container {
     display: flex;
-    flex-direction: row-reverse; /* 右 → 左 */
+    flex-direction: column; /* ← 縦に並べる */
     height: 100vh;
 
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow-y: scroll;  /* ← 縦スクロール */
+    overflow-x: hidden;
 
     scroll-behavior: smooth;
   }
 
   /* ===== 1コマ ===== */
   .page {
-    flex: 0 0 100vw; /* 1コマ＝画面幅 */
-    height: 100vh;
+    flex: 0 0 100vh; /* 1コマ＝画面高さ */
+    width: 100vw;
   }
 
   .page img {
@@ -58,8 +58,8 @@
 
   /* ===== アンケートページ ===== */
   #survey {
-    flex: 0 0 100vw;
-    height: 100vh;
+    flex: 0 0 100vh;
+    width: 100vw;
     background: #fff;
     color: #000;
 
@@ -117,15 +117,15 @@ fetch("pages.json")
     survey.innerHTML = `
       <h1>アンケートにご協力ください</h1>
       <p>ご意見は今後の研究に活用します。</p>
-      <iframe src="https://docs.google.com/forms/d/1e4g9vLe-CaiT-30MiuNK_9ZcCsplhU55qEbK2p2E_zo/viewform"></iframe>
+      <iframe src="https://docs.google.com/forms/d/1nUVvbVb-r3FXkwYg0o9CNu9nA-RhLF4H2-7Y2BmKGtU/viewform"></iframe>
     `;
     container.appendChild(survey);
   });
 
-/* ===== 読了率計算（container基準） ===== */
+/* ===== 読了率計算（縦スクロール用） ===== */
 container.addEventListener("scroll", () => {
-  const maxScroll = container.scrollWidth - container.clientWidth;
-  const progress = 1 - container.scrollLeft / maxScroll;
+  const maxScroll = container.scrollHeight - container.clientHeight;
+  const progress = container.scrollTop / maxScroll;
 
   progressBar.style.width =
     Math.max(0, Math.min(progress * 100, 100)) + "%";
